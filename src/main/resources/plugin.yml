@@ -1,0 +1,14 @@
+name: PixplazeLoginSync
+version: '${project.version}'
+main: pixplaze.pixplazeloginsync.PixplazeLoginSync
+api-version: 1.18
+authors: [ pazik98 ]
+description: Pixplaze plugin for player login and data syncronization
+commands:
+    login:
+      description: Will log you into the server.
+      usage: /<command> <password>
+      aliases: [l]
+    logout:
+      description: Will log out you from the server.
+      usage: /<command>
