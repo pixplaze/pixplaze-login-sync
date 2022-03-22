@@ -11,7 +11,7 @@
 
     <name>PixplazeLoginSync</name>
 
-    <description>Pixplaze plugin for player login and data syncronization</description>
+    <description>Pixplaze plugin for player login and data synchronization</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -60,6 +60,11 @@
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.0.1-jre</version>
         </dependency>
     </dependencies>
 </project>

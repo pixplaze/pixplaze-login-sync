@@ -1,14 +1,20 @@
-package pixplaze.sync;
+package pixplaze.sync.database.sql;
 
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pixplaze.pixplazeloginsync.PixplazeLoginSync;
+import pixplaze.sync.ISyncHandler;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class LoginSyncHandler implements ISyncHandler {
+    private static final ConnectionManager connectionManager = ConnectionManager.getInstance();
+
     private static LoginSyncHandler instance;
 
     private final ArrayList<Player> unloginedPlayers = new ArrayList<>();
@@ -26,23 +32,35 @@ public class LoginSyncHandler implements ISyncHandler {
     }
 
     @Override
-    public String getPlayerRole(String playerName) {
+    public String getPlayerRole(Player player) {
         return null;
     }
 
     @Override
-    public Set<String> getPlayerPermissions(String playerName) {
+    public Set<String> getPlayerPermissions(Player player) {
         return null;
     }
 
     @Override
-    public boolean registerPlayer(String playerName, String password) {
-        return false;
+    public boolean registerPlayer(Player player, String passwordHash) {
+        try {
+            String query = "INSERT INTO player (name, pass_hash, reg_date) VALUES ('" +
+                    player.getName().toLowerCase(Locale.ROOT) + "', '" + passwordHash + "', now());";
+            connectionManager.executeUpdate(query);
+            return true;
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public boolean loginPlayer(String playerName, String password) {
-        return false;
+    public boolean authPlayer(Player player, String passwordHash) {
+        if (getPlayerPassHash(player).equals(passwordHash)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -60,7 +78,6 @@ public class LoginSyncHandler implements ISyncHandler {
             loginedPlayers.remove(player);
         }
         unloginedPlayers.add(player);
-        player.sendMessage("Авторизируйтесь с помощью /login или зарегистрируйтесь с помощью /register");
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, Integer.MAX_VALUE));
         player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, Integer.MAX_VALUE));
         player.sendMessage("Вы разлогинились!");
@@ -77,5 +94,36 @@ public class LoginSyncHandler implements ISyncHandler {
         player.removePotionEffect(PotionEffectType.BLINDNESS);
         player.sendMessage("Вы залогинились!");
         return true;
+    }
+
+    public List<String> getRegisteredPlayersNames() {
+        List<String> names = new ArrayList<>();
+
+        try {
+            ResultSet rs = connectionManager.executeSelect("SELECT * FROM player");
+            while (rs.next()) {
+                String name = rs.getString("name");
+                names.add(name);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return names;
+    }
+
+    private String getPlayerPassHash(Player player) {
+        String passHash = "";
+
+        ResultSet rs = connectionManager.executeSelect("SELECT * FROM player WHERE name ='" +
+                player.getName() + "';");
+
+        try {
+            rs.next();
+            passHash = rs.getString("pass_hash");
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return passHash;
     }
 }

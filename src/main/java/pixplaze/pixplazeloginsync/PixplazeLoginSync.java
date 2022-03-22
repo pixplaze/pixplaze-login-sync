@@ -3,6 +3,7 @@ package pixplaze.pixplazeloginsync;
 import org.bukkit.plugin.java.JavaPlugin;
 import pixplaze.PlayerListener;
 import pixplaze.commands.CommandHandler;
+import pixplaze.sync.database.sql.ConnectionManager;
 
 public final class PixplazeLoginSync extends JavaPlugin {
 
@@ -21,6 +22,8 @@ public final class PixplazeLoginSync extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getCommand("login").setExecutor(CommandHandler.getInstance());
         getCommand("logout").setExecutor(CommandHandler.getInstance());
+        getCommand("register").setExecutor(CommandHandler.getInstance());
+        ConnectionManager.getInstance().connect();
     }
 
     @Override

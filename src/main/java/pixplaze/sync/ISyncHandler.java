@@ -6,13 +6,13 @@ import java.util.Set;
 
 public interface ISyncHandler {
 
-    String getPlayerRole(String playerName);
+    String getPlayerRole(Player player);
 
-    Set<String> getPlayerPermissions(String playerName);
+    Set<String> getPlayerPermissions(Player player);
 
-    boolean registerPlayer(String playerName, String password);
+    boolean registerPlayer(Player player, String passwordHash);
 
-    boolean loginPlayer(String playerName, String password);
+    boolean authPlayer(Player player, String passwordHash);
 
     boolean isPlayerLogined(Player player);
 

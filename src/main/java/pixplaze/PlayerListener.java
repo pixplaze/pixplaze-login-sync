@@ -10,34 +10,41 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import pixplaze.pixplazeloginsync.PixplazeLoginSync;
-import pixplaze.sync.LoginSyncHandler;
+import pixplaze.sync.database.sql.LoginSyncHandler;
+import pixplaze.sync.database.sql.ConnectionManager;
+
+import java.util.List;
 
 public class PlayerListener implements Listener {
 
-    private LoginSyncHandler syncer = LoginSyncHandler.getInstance();
+    private final static ConnectionManager connectionManager = ConnectionManager.getInstance();
+    private final static LoginSyncHandler loginSyncHandler = LoginSyncHandler.getInstance();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        syncer.setPlayerUnlogined(e.getPlayer());
+        Player player = e.getPlayer();
+        loginSyncHandler.setPlayerUnlogined(player);
+
+        List<String> registeredPlayersNames = loginSyncHandler.getRegisteredPlayersNames();
+        if (!registeredPlayersNames.contains(player.getName())) {
+            player.sendMessage("Зарегистрируйтесь с помощью команды /register!");
+        } else {
+            player.sendMessage("Залогиньтесь с помощью команды /login!");
+        }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        syncer.setPlayerUnlogined(e.getPlayer());
+        loginSyncHandler.setPlayerUnlogined(e.getPlayer());
     }
 
     @EventHandler
     public void onPlayerMove(@NotNull PlayerMoveEvent e) {
         Player player = e.getPlayer();
-        if (!syncer.isPlayerLogined(player)) {
+        if (!loginSyncHandler.isPlayerLogined(player)) {
              player.sendMessage("Вы не можете двигаться!");
              e.setCancelled(true);
         }
@@ -48,7 +55,7 @@ public class PlayerListener implements Listener {
         Entity entity = e.getEntity();
         if (entity.getType() == EntityType.PLAYER) {
             Player player = PixplazeLoginSync.getInstance().getServer().getPlayer(entity.getName());
-            if (player != null && !syncer.isPlayerLogined(player)) {
+            if (player != null && !loginSyncHandler.isPlayerLogined(player)) {
                 e.setCancelled(true);
             }
         }
@@ -57,7 +64,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-        if (!syncer.isPlayerLogined(player)) {
+        if (!loginSyncHandler.isPlayerLogined(player)) {
             player.sendMessage("Вы не можете взаимодействовать!");
             e.setCancelled(true);
         }
@@ -66,7 +73,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent e) {
         Player player = e.getPlayer();
-        if (!syncer.isPlayerLogined(player)) {
+        if (!loginSyncHandler.isPlayerLogined(player)) {
             player.sendMessage("Вы не можете ничего выкинуть!");
             e.setCancelled(true);
         }
@@ -77,7 +84,7 @@ public class PlayerListener implements Listener {
         Entity entity = e.getEntity();
         if (entity.getType() == EntityType.PLAYER) {
             Player player = PixplazeLoginSync.getInstance().getServer().getPlayer(entity.getName());
-            if (player != null && !syncer.isPlayerLogined(player)) {
+            if (player != null && !loginSyncHandler.isPlayerLogined(player)) {
                 e.setCancelled(true);
             }
         }
@@ -88,7 +95,7 @@ public class PlayerListener implements Listener {
         Entity entity = e.getEntity();
         if (entity.getType() == EntityType.PLAYER) {
             Player player = PixplazeLoginSync.getInstance().getServer().getPlayer(entity.getName());
-            if (player != null && !syncer.isPlayerLogined(player)) {
+            if (player != null && !loginSyncHandler.isPlayerLogined(player)) {
                 e.setCancelled(true);
             }
         }
@@ -98,7 +105,7 @@ public class PlayerListener implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent e) {
         HumanEntity entity = e.getWhoClicked();
         Player player = PixplazeLoginSync.getInstance().getServer().getPlayer(entity.getName());
-        if (player != null && !syncer.isPlayerLogined(player)) {
+        if (player != null && !loginSyncHandler.isPlayerLogined(player)) {
             entity.closeInventory();
             e.setCancelled(true);
             entity.sendMessage("Вы не можете использовать инвентарь!");
@@ -109,7 +116,7 @@ public class PlayerListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent e) {
         Player player = e.getPlayer();
 
-        if (!syncer.isPlayerLogined(player)) {
+        if (!loginSyncHandler.isPlayerLogined(player)) {
             player.sendMessage("Вы не можете отправлять сообщения!");
             e.setCancelled(true);
         }

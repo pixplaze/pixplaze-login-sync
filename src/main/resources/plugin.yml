@@ -5,6 +5,10 @@ api-version: 1.18
 authors: [ pazik98 ]
 description: Pixplaze plugin for player login and data syncronization
 commands:
+    register:
+      description: Will register you
+      usage: /<command> <password> <password repeat>
+      aliases: [reg]
     login:
       description: Will log you into the server.
       usage: /<command> <password>
