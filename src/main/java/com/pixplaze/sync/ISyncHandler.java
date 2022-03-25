@@ -1,4 +1,4 @@
-package pixplaze.sync;
+package com.pixplaze.sync;
 
 import org.bukkit.entity.Player;
 

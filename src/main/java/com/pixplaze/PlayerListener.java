@@ -1,5 +1,6 @@
-package pixplaze;
+package com.pixplaze;
 
+import com.pixplaze.sync.database.sql.ConnectionManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
@@ -12,9 +13,8 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.jetbrains.annotations.NotNull;
-import pixplaze.pixplazeloginsync.PixplazeLoginSync;
-import pixplaze.sync.database.sql.LoginSyncHandler;
-import pixplaze.sync.database.sql.ConnectionManager;
+import com.pixplaze.plugin.PixplazeLoginSync;
+import com.pixplaze.sync.database.sql.LoginSyncHandler;
 
 import java.util.List;
 

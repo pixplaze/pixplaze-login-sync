@@ -1,6 +1,6 @@
 name: PixplazeLoginSync
 version: '${project.version}'
-main: pixplaze.pixplazeloginsync.PixplazeLoginSync
+main: com.pixplaze.plugin.PixplazeLoginSync
 api-version: 1.18
 authors: [ pazik98 ]
 description: Pixplaze plugin for player login and data syncronization

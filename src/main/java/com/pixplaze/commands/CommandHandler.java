@@ -1,14 +1,13 @@
-package pixplaze.commands;
+package com.pixplaze.commands;
 
 import com.google.common.hash.Hashing;
+import com.pixplaze.sync.database.sql.LoginSyncHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import pixplaze.pixplazeloginsync.PixplazeLoginSync;
-import pixplaze.sync.database.sql.LoginSyncHandler;
-import pixplaze.sync.database.sql.ConnectionManager;
+import com.pixplaze.plugin.PixplazeLoginSync;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;

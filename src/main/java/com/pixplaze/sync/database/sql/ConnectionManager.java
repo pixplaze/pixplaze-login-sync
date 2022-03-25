@@ -1,12 +1,8 @@
-package pixplaze.sync.database.sql;
+package com.pixplaze.sync.database.sql;
 
-import org.bukkit.entity.Player;
-import pixplaze.pixplazeloginsync.PixplazeLoginSync;
+import com.pixplaze.plugin.PixplazeLoginSync;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 
 public class ConnectionManager {

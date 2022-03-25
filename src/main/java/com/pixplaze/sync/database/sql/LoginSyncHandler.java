@@ -1,9 +1,9 @@
-package pixplaze.sync.database.sql;
+package com.pixplaze.sync.database.sql;
 
+import com.pixplaze.sync.ISyncHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pixplaze.sync.ISyncHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

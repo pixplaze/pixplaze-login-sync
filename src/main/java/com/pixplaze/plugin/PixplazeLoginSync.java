@@ -1,9 +1,9 @@
-package pixplaze.pixplazeloginsync;
+package com.pixplaze.plugin;
 
+import com.pixplaze.PlayerListener;
+import com.pixplaze.commands.CommandHandler;
+import com.pixplaze.sync.database.sql.ConnectionManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import pixplaze.PlayerListener;
-import pixplaze.commands.CommandHandler;
-import pixplaze.sync.database.sql.ConnectionManager;
 
 public final class PixplazeLoginSync extends JavaPlugin {
 
