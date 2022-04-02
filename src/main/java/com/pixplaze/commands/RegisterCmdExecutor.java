@@ -49,13 +49,13 @@ public class RegisterCmdExecutor implements CommandExecutor {
 
         String passwordHash = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         boolean result = loginSyncHandler.registerPlayer(player, passwordHash);
+
         if (result) {
             player.sendMessage("Вы успешно зарегистрировались!");
             loginSyncHandler.setPlayerLogined(player);
-            return true;
         } else {
             player.sendMessage("Ошибка при регистрации!");
-            return true;
         }
+        return true;
     }
 }
