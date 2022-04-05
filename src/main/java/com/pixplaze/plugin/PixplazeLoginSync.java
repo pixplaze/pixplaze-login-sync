@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
+
 public final class PixplazeLoginSync extends JavaPlugin {
 
     private static PixplazeLoginSync instance;
@@ -28,9 +30,9 @@ public final class PixplazeLoginSync extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
-        getCommand("login").setExecutor(new LoginCmdExecutor());
-        getCommand("logout").setExecutor(new LogoutCmdExecutor());
-        getCommand("register").setExecutor(new RegisterCmdExecutor());
+        Objects.requireNonNull(getCommand("login")).setExecutor(new LoginCmdExecutor());
+        Objects.requireNonNull(getCommand("logout")).setExecutor(new LogoutCmdExecutor());
+        Objects.requireNonNull(getCommand("register")).setExecutor(new RegisterCmdExecutor());
 
         ConnectionManager.getInstance().connect();
     }
