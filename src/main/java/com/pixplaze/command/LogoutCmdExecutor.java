@@ -1,4 +1,4 @@
-package com.pixplaze.commands;
+package com.pixplaze.command;
 
 import com.pixplaze.plugin.PixplazeLoginSync;
 import com.pixplaze.sync.database.sql.LoginSyncHandler;
@@ -7,8 +7,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Locale;
 
 public class LogoutCmdExecutor implements CommandExecutor {
 

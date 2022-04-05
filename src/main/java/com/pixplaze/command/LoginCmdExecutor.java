@@ -1,4 +1,4 @@
-package com.pixplaze.commands;
+package com.pixplaze.command;
 
 import com.google.common.hash.Hashing;
 import com.pixplaze.plugin.PixplazeLoginSync;

@@ -1,10 +1,10 @@
 package com.pixplaze.plugin;
 
 import com.pixplaze.PlayerListener;
-import com.pixplaze.commands.LoginCmdExecutor;
-import com.pixplaze.commands.LogoutCmdExecutor;
-import com.pixplaze.commands.RegisterCmdExecutor;
+import com.pixplaze.command.*;
 import com.pixplaze.sync.database.sql.ConnectionManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PixplazeLoginSync extends JavaPlugin {
@@ -21,6 +21,11 @@ public final class PixplazeLoginSync extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        ((LoggerContext) LogManager.
+                getContext(false)).getConfiguration().
+                getLoggerConfig(LogManager.ROOT_LOGGER_NAME).
+                addFilter(new PasswordFilter());
+
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         getCommand("login").setExecutor(new LoginCmdExecutor());

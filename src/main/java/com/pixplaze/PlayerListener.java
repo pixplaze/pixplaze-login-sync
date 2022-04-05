@@ -20,7 +20,6 @@ import java.util.List;
 
 public class PlayerListener implements Listener {
 
-    private final static ConnectionManager connectionManager = ConnectionManager.getInstance();
     private final static LoginSyncHandler loginSyncHandler = LoginSyncHandler.getInstance();
 
     @EventHandler
