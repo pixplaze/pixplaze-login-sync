@@ -3,6 +3,7 @@ package com.pixplaze.command;
 import com.google.common.hash.Hashing;
 import com.pixplaze.plugin.PixplazeLoginSync;
 import com.pixplaze.sync.database.sql.LoginSyncHandler;
+import com.pixplaze.util.Common;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,19 +24,20 @@ public class RegisterCmdExecutor implements CommandExecutor {
                              @NotNull String[] args) {
 
         if (!(sender instanceof Player)) {
-            plugin.getLogger().info("Вы не можете это сделать в консоли!");
+            plugin.getLogger().warning("You cannot use this command in the console!");
             return true;
         }
 
         Player player = (Player) sender;
+        String locale = player.getLocale();
 
         if (args.length != 2) {
-            player.sendMessage("Неверные аргументы!");
+            player.sendMessage(Common.getMessage(locale, "wrong-args"));
             return false;
         }
 
         if (loginSyncHandler.getRegisteredPlayersNames().contains(player.getName())) {
-            player.sendMessage("Вы уже зарегистрированы!");
+            player.sendMessage(Common.getMessage(locale, "already-registered"));
             return true;
         }
 
@@ -51,10 +53,10 @@ public class RegisterCmdExecutor implements CommandExecutor {
         boolean result = loginSyncHandler.registerPlayer(player, passwordHash);
 
         if (result) {
-            player.sendMessage("Вы успешно зарегистрировались!");
+            player.sendMessage(Common.getMessage(locale, "success-registration"));
             loginSyncHandler.setPlayerLogined(player);
         } else {
-            player.sendMessage("Ошибка при регистрации!");
+            player.sendMessage(Common.getMessage(locale, "unknown-registration-error"));
         }
         return true;
     }

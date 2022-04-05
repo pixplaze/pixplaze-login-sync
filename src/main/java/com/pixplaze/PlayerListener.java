@@ -1,5 +1,6 @@
 package com.pixplaze;
 
+import com.pixplaze.util.Common;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
@@ -29,13 +30,15 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
+        String locale = player.getLocale();
+
         loginSyncHandler.setPlayerUnlogined(player);
 
         List<String> registeredPlayersNames = loginSyncHandler.getRegisteredPlayersNames();
         if (!registeredPlayersNames.contains(player.getName())) {
-            player.sendMessage("Зарегистрируйтесь с помощью команды /register!");
+            player.sendMessage(Common.getMessage(locale, "new-player-join-text"));
         } else {
-            player.sendMessage("Залогиньтесь с помощью команды /login!");
+            player.sendMessage(Common.getMessage(locale, "old-player-join-text"));
         }
     }
 
@@ -48,7 +51,6 @@ public class PlayerListener implements Listener {
     public void onPlayerMove(@NotNull PlayerMoveEvent e) {
         Player player = e.getPlayer();
         if (!loginSyncHandler.isPlayerLogined(player)) {
-             player.sendMessage("Вы не можете двигаться!");
              e.setCancelled(true);
         }
     }
@@ -68,7 +70,7 @@ public class PlayerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         if (!loginSyncHandler.isPlayerLogined(player)) {
-            player.sendMessage("Вы не можете взаимодействовать!");
+            player.sendMessage(Common.getMessage(player.getLocale(), "not-permitted-action"));
             e.setCancelled(true);
         }
     }
@@ -77,7 +79,7 @@ public class PlayerListener implements Listener {
     public void onPlayerDropItem(PlayerDropItemEvent e) {
         Player player = e.getPlayer();
         if (!loginSyncHandler.isPlayerLogined(player)) {
-            player.sendMessage("Вы не можете ничего выкинуть!");
+            player.sendMessage(Common.getMessage(player.getLocale(), "not-permitted-action"));
             e.setCancelled(true);
         }
     }
@@ -110,8 +112,8 @@ public class PlayerListener implements Listener {
         Player player = PixplazeLoginSync.getInstance().getServer().getPlayer(entity.getName());
         if (player != null && !loginSyncHandler.isPlayerLogined(player)) {
             entity.closeInventory();
+            player.sendMessage(Common.getMessage(player.getLocale(), "not-permitted-action"));
             e.setCancelled(true);
-            entity.sendMessage("Вы не можете использовать инвентарь!");
         }
     }
 
@@ -120,7 +122,7 @@ public class PlayerListener implements Listener {
         Player player = e.getPlayer();
 
         if (!loginSyncHandler.isPlayerLogined(player)) {
-            player.sendMessage("Вы не можете отправлять сообщения!");
+            player.sendMessage(Common.getMessage(player.getLocale(), "not-permitted-action"));
             e.setCancelled(true);
         }
     }

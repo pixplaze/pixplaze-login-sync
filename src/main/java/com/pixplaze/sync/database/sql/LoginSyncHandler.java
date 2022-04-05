@@ -80,7 +80,6 @@ public class LoginSyncHandler implements ISyncHandler {
         unloginedPlayers.add(player);
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, Integer.MAX_VALUE));
         player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, Integer.MAX_VALUE));
-        player.sendMessage("Вы разлогинились!");
         return true;
     }
 
@@ -92,7 +91,6 @@ public class LoginSyncHandler implements ISyncHandler {
         loginedPlayers.add(player);
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
         player.removePotionEffect(PotionEffectType.BLINDNESS);
-        player.sendMessage("Вы залогинились!");
         return true;
     }
 

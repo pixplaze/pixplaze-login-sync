@@ -1,8 +1,10 @@
 package com.pixplaze.command;
 
 import com.google.common.hash.Hashing;
+import com.pixplaze.keyword.Dictionary;
 import com.pixplaze.plugin.PixplazeLoginSync;
 import com.pixplaze.sync.database.sql.LoginSyncHandler;
+import com.pixplaze.util.Common;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,19 +23,20 @@ public class LoginCmdExecutor implements CommandExecutor {
                              @NotNull String[] args) {
 
         if (!(sender instanceof Player)) {
-            plugin.getLogger().info("Вы не можете это сделать в консоли!");
+            plugin.getLogger().warning("You cannot use this command in the console!");
             return true;
         }
 
         Player player = (Player) sender;
+        String locale = player.getLocale();
 
         if (args.length != 1) {
-            player.sendMessage("Неверные аргументы!");
+            player.sendMessage(Common.getMessage(locale, "wrong-args"));
             return false;
         }
 
         if (!loginSyncHandler.getRegisteredPlayersNames().contains(player.getName())) {
-            player.sendMessage("Вы ещё не зарегистрированы!");
+            player.sendMessage(Common.getMessage(locale, "not-registered-yet"));
             return true;
         }
 
@@ -42,8 +45,9 @@ public class LoginCmdExecutor implements CommandExecutor {
 
         if (loginSyncHandler.authPlayer(player, passwordHash)) {
             loginSyncHandler.setPlayerLogined(player);
+            player.sendMessage(Common.getMessage(locale, "success-authorization"));
         } else {
-            player.sendMessage("Неверный пароль!");
+            player.sendMessage(Common.getMessage(locale, "wrong-password"));
         }
         return true;
     }
