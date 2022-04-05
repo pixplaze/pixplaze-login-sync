@@ -1,0 +1,15 @@
+translation:
+  locale: "ru-RU"
+  keywords:
+    new-player-join-text: "&bПожалуйста, зарегистрируйтесь с помощью команды /register"
+    old-player-join-text: "&bПожалуйста, авторизируйтесь с помощью команды /login"
+    success-registration: "&bВы успешно зарегистрировались!"
+    success-authorization: "&bВы успешно авторизировались."
+    player-logout: "&eВы разлогинились."
+    wrong-password: "&4Неверный пароль"
+    wrong-args: "&4Неправильные аргументы"
+    not-registered-yet: "&4Вы ещё не зарегистрированы в системе Pixplaze!"
+    not-logged-yet: "&4Вы ещё не авторизовались!"
+    already-registered: "&4Вы уже зарегистрированы! &bИспользуйте /login для авторизации"
+    unknown-registration-error: "&4Произошла неизвестная ошибка при регистрации!"
+    not-permitted-action: "&4Вы не можете этого сделать!"
