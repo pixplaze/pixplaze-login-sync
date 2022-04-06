@@ -9,12 +9,21 @@ import org.apache.logging.log4j.core.filter.AbstractFilter;
 import org.apache.logging.log4j.message.Message;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 public class PasswordFilter extends AbstractFilter {
 
     private static final PixplazeLoginSync plugin = PixplazeLoginSync.getInstance();
+    private static final List<String> stopList = new ArrayList<>();
+
+    public PasswordFilter() {
+        stopList.add("login");
+        stopList.add("register");
+        stopList.addAll(Objects.requireNonNull(plugin.getCommand("login")).getAliases());
+        stopList.addAll(Objects.requireNonNull(plugin.getCommand("register")).getAliases());
+    }
 
     @Override
     public Result filter(LogEvent event) {
@@ -37,23 +46,13 @@ public class PasswordFilter extends AbstractFilter {
     }
 
     private Result isLoggable(String msg) {
-        if (msg != null) {
-            if (msg.contains("issued server command:")) {
-                if (!checkForUnsafetyCommand(msg)) {
-                    return Result.DENY;
-                }
-            }
+        if (msg != null && msg.contains("issued server command:") && !checkForUnsafetyCommand(msg)) {
+            return Result.DENY;
         }
         return Result.NEUTRAL;
     }
 
     private boolean checkForUnsafetyCommand(String msg) {
-        ArrayList<String> stopList = new ArrayList<>();
-        stopList.add("login");
-        stopList.add("register");
-        stopList.addAll(Objects.requireNonNull(plugin.getCommand("login")).getAliases());
-        stopList.addAll(Objects.requireNonNull(plugin.getCommand("register")).getAliases());
-
         for (String word : stopList) {
             if (msg.toLowerCase(Locale.ROOT).contains(word)) {
                 return false;
@@ -61,5 +60,4 @@ public class PasswordFilter extends AbstractFilter {
         }
         return true;
     }
-
 }
