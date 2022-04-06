@@ -10,8 +10,6 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.beans.ExceptionListener;
-import java.io.File;
 import java.util.Locale;
 import java.util.Objects;
 

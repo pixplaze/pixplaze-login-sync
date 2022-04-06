@@ -11,12 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.jetbrains.annotations.NotNull;
 import com.pixplaze.plugin.PixplazeLoginSync;
 import com.pixplaze.sync.database.sql.LoginSyncHandler;
@@ -122,6 +117,16 @@ public class PlayerListener implements Listener {
         Player player = e.getPlayer();
 
         if (!loginSyncHandler.isPlayerLogined(player)) {
+            player.sendMessage(Common.getMessage(player.getLocale(), "not-permitted-action"));
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent e) {
+        Player player = e.getPlayer();
+
+        if (!loginSyncHandler.isPlayerLogined(player) && !Common.isExternalCommand(e.getMessage())) {
             player.sendMessage(Common.getMessage(player.getLocale(), "not-permitted-action"));
             e.setCancelled(true);
         }
