@@ -2,6 +2,7 @@ package com.pixplaze.sync;
 
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Set;
 
 public interface ISyncHandler {
@@ -16,7 +17,11 @@ public interface ISyncHandler {
 
     boolean isPlayerLogined(Player player);
 
+    List<Player> getLoginedPlayers();
+
     boolean setPlayerUnlogined(Player player);
 
     boolean setPlayerLogined(Player player);
+
+    List<String> getRegisteredPlayersNames();
 }

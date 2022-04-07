@@ -27,10 +27,6 @@ public class LoginSyncHandler implements ISyncHandler {
         return instance;
     }
 
-    public boolean hasPermission(Player player, String permissionName) {
-        return false;
-    }
-
     @Override
     public String getPlayerRole(Player player) {
         return null;
@@ -56,20 +52,17 @@ public class LoginSyncHandler implements ISyncHandler {
 
     @Override
     public boolean authPlayer(Player player, String passwordHash) {
-        if (getPlayerPassHash(player).equals(passwordHash)) {
-            return true;
-        } else {
-            return false;
-        }
+        return getPlayerPassHash(player).equals(passwordHash);
     }
 
     @Override
     public boolean isPlayerLogined(Player player) {
-        if (loginedPlayers.contains(player)) {
-            return true;
-        } else {
-            return false;
-        }
+        return loginedPlayers.contains(player);
+    }
+
+    @Override
+    public List<Player> getLoginedPlayers() {
+        return new ArrayList<>(loginedPlayers);
     }
 
     @Override
@@ -85,15 +78,14 @@ public class LoginSyncHandler implements ISyncHandler {
 
     @Override
     public boolean setPlayerLogined(Player player) {
-        if (unloginedPlayers.contains(player)) {
-            unloginedPlayers.remove(player);
-        }
+        unloginedPlayers.remove(player);
         loginedPlayers.add(player);
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
         player.removePotionEffect(PotionEffectType.BLINDNESS);
         return true;
     }
 
+    @Override
     public List<String> getRegisteredPlayersNames() {
         List<String> names = new ArrayList<>();
 
