@@ -3,14 +3,12 @@ package com.pixplaze.sync.database.sql;
 import com.pixplaze.plugin.PixplazeLoginSync;
 
 import java.sql.*;
-import java.util.Properties;
 
 public class ConnectionManager {
-    private final static String DB_URL = "jdbc:mysql://localhost:3306/test";
+    private final static String DB_URL = "jdbc:mysql://localhost:3306/login_sync_db";
     private final static String DB_USER = "root";
     private final static String DB_PASS = "root";
 
-    private Connection connection;
     private Statement statement;
 
     private static ConnectionManager instance;
@@ -24,10 +22,7 @@ public class ConnectionManager {
 
     public void connect() {
         try {
-            Properties properties = new Properties();
-            properties.setProperty("autoReconnect", "true");
-            properties.setProperty("connectTimeout", "1000");
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             statement = connection.createStatement();
         } catch (SQLException sqlException) {
             PixplazeLoginSync.getInstance().getLogger().warning("Cannot connect database.");
