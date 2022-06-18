@@ -41,7 +41,7 @@ public class LoginSyncHandler implements ISyncHandler {
     public boolean registerPlayer(Player player, String passwordHash) {
         try {
             String query = "INSERT INTO player (name, pass_hash, reg_date) VALUES ('" +
-                    player.getName().toLowerCase(Locale.ROOT) + "', '" + passwordHash + "', now());";
+                    player.getName() + "', '" + passwordHash + "', now());";
             connectionManager.executeUpdate(query);
             return true;
         } catch (Exception exception) {
