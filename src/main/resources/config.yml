@@ -1,1 +1,7 @@
 default-locale: "ru-RU"
+mysql:
+  host: localhost
+  port: 3306
+  name: login_sync_db
+  user: root
+  password: root

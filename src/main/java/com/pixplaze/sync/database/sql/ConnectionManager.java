@@ -5,13 +5,23 @@ import com.pixplaze.plugin.PixplazeLoginSync;
 import java.sql.*;
 
 public class ConnectionManager {
-    private final static String DB_URL = "jdbc:mysql://localhost:3306/login_sync_db";
-    private final static String DB_USER = "root";
-    private final static String DB_PASS = "root";
+    private final PixplazeLoginSync plugin = PixplazeLoginSync.getInstance();
 
-    private Statement statement;
+    private String url;
+    private String host;
+    private String port;
+    private String name;
+    private String user;
+    private String password;
+
+    private Connection connection;
 
     private static ConnectionManager instance;
+
+    public ConnectionManager() {
+        updateData();
+        updateUrl();
+    }
 
     public static ConnectionManager getInstance() {
         if (instance == null) {
@@ -22,8 +32,7 @@ public class ConnectionManager {
 
     public void connect() {
         try {
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-            statement = connection.createStatement();
+            connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException sqlException) {
             PixplazeLoginSync.getInstance().getLogger().warning("Cannot connect database.");
             sqlException.printStackTrace();
@@ -33,6 +42,7 @@ public class ConnectionManager {
     protected ResultSet executeSelect(String query) {
         ResultSet resultSet = null;
         try {
+            Statement statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -43,10 +53,23 @@ public class ConnectionManager {
     protected int executeUpdate(String query) {
         int rows = 0;
         try {
+            Statement statement = connection.createStatement();
             rows = statement.executeUpdate(query);
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return rows;
+    }
+
+    private void updateUrl() {
+        url = "jdbc:mysql://" + host + ":" + port + "/" + name;
+    }
+
+    private void updateData() {
+        host = plugin.getConfig().getString("mysql.host");
+        port = plugin.getConfig().getString("mysql.port");
+        name = plugin.getConfig().getString("mysql.name");
+        user = plugin.getConfig().getString("mysql.user");
+        password = plugin.getConfig().getString("mysql.password");
     }
 }
