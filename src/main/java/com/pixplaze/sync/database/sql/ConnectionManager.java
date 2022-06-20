@@ -8,7 +8,7 @@ public class ConnectionManager {
     private final PixplazeLoginSync plugin = PixplazeLoginSync.getInstance();
 
     private String url;
-    private String host;
+    private String address;
     private String port;
     private String name;
     private String user;
@@ -19,8 +19,12 @@ public class ConnectionManager {
     private static ConnectionManager instance;
 
     public ConnectionManager() {
-        updateData();
-        updateUrl();
+        address = plugin.getConfig().getString("mysql.address");
+        port = plugin.getConfig().getString("mysql.port");
+        name = plugin.getConfig().getString("mysql.name");
+        user = plugin.getConfig().getString("mysql.user");
+        password = plugin.getConfig().getString("mysql.password");
+        url = "jdbc:mysql://" + address + ":" + port + "/" + name + "?autoReconnect=true&useUnicode=yes";
     }
 
     public static ConnectionManager getInstance() {
@@ -59,17 +63,5 @@ public class ConnectionManager {
             sqlException.printStackTrace();
         }
         return rows;
-    }
-
-    private void updateUrl() {
-        url = "jdbc:mysql://" + host + ":" + port + "/" + name;
-    }
-
-    private void updateData() {
-        host = plugin.getConfig().getString("mysql.host");
-        port = plugin.getConfig().getString("mysql.port");
-        name = plugin.getConfig().getString("mysql.name");
-        user = plugin.getConfig().getString("mysql.user");
-        password = plugin.getConfig().getString("mysql.password");
     }
 }
