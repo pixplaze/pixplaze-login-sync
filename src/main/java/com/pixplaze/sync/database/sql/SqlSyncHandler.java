@@ -39,8 +39,8 @@ public class SqlSyncHandler implements ISyncHandler {
     @Override
     public boolean registerPlayer(Player player, String passwordHash) {
         try {
-            String query = "INSERT INTO player (name, pass_hash, reg_date) VALUES ('" +
-                    player.getName() + "', '" + passwordHash + "', now());";
+            String query = String.format("INSERT INTO player (name, pass_hash, reg_date) VALUES ('%s','%s', now())",
+                    player.getName(), passwordHash);
             connectionManager.executeUpdate(query);
             return true;
         } catch (Exception exception) {
@@ -103,8 +103,8 @@ public class SqlSyncHandler implements ISyncHandler {
     private String getPlayerPassHash(Player player) {
         String passHash = "";
 
-        ResultSet rs = connectionManager.executeSelect("SELECT * FROM player WHERE name ='" +
-                player.getName() + "';");
+        String query = String.format("SELECT * FROM player WHERE name ='%s'", player.getName());
+        ResultSet rs = connectionManager.executeSelect(query);
 
         try {
             rs.next();
