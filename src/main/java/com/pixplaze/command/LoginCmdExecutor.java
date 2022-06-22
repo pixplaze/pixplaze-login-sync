@@ -1,9 +1,8 @@
 package com.pixplaze.command;
 
 import com.google.common.hash.Hashing;
-import com.pixplaze.keyword.Dictionary;
 import com.pixplaze.plugin.PixplazeLoginSync;
-import com.pixplaze.sync.database.sql.LoginSyncHandler;
+import com.pixplaze.sync.database.sql.SqlSyncHandler;
 import com.pixplaze.util.Common;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 
 public class LoginCmdExecutor implements CommandExecutor {
 
-    private static final LoginSyncHandler loginSyncHandler = LoginSyncHandler.getInstance();
+    private static final SqlSyncHandler syncHandler = SqlSyncHandler.getInstance();
     private static final PixplazeLoginSync plugin = PixplazeLoginSync.getInstance();
 
     @Override
@@ -35,7 +34,7 @@ public class LoginCmdExecutor implements CommandExecutor {
             return false;
         }
 
-        if (!loginSyncHandler.getRegisteredPlayersNames().contains(player.getName())) {
+        if (!syncHandler.getRegisteredPlayersNames().contains(player.getName())) {
             player.sendMessage(Common.getMessage(locale, "not-registered-yet"));
             return true;
         }
@@ -43,8 +42,8 @@ public class LoginCmdExecutor implements CommandExecutor {
         String password = args[0];
         String passwordHash = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
 
-        if (loginSyncHandler.authPlayer(player, passwordHash)) {
-            loginSyncHandler.setPlayerLogined(player);
+        if (syncHandler.authPlayer(player, passwordHash)) {
+            syncHandler.setPlayerLogined(player);
             player.sendMessage(Common.getMessage(locale, "success-authorization"));
         } else {
             player.sendMessage(Common.getMessage(locale, "wrong-password"));

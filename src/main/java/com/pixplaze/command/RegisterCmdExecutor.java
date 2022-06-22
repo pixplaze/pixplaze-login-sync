@@ -2,7 +2,7 @@ package com.pixplaze.command;
 
 import com.google.common.hash.Hashing;
 import com.pixplaze.plugin.PixplazeLoginSync;
-import com.pixplaze.sync.database.sql.LoginSyncHandler;
+import com.pixplaze.sync.database.sql.SqlSyncHandler;
 import com.pixplaze.util.Common;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 
 public class RegisterCmdExecutor implements CommandExecutor {
 
-    private static final LoginSyncHandler loginSyncHandler = LoginSyncHandler.getInstance();
+    private static final SqlSyncHandler syncHandler = SqlSyncHandler.getInstance();
     private static final PixplazeLoginSync plugin = PixplazeLoginSync.getInstance();
 
     private static final int minPassLength = 4;
@@ -36,7 +36,7 @@ public class RegisterCmdExecutor implements CommandExecutor {
             return false;
         }
 
-        if (loginSyncHandler.getRegisteredPlayersNames().contains(player.getName())) {
+        if (syncHandler.getRegisteredPlayersNames().contains(player.getName())) {
             player.sendMessage(Common.getMessage(locale, "already-registered"));
             return true;
         }
@@ -50,11 +50,11 @@ public class RegisterCmdExecutor implements CommandExecutor {
         }
 
         String passwordHash = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
-        boolean result = loginSyncHandler.registerPlayer(player, passwordHash);
+        boolean result = syncHandler.registerPlayer(player, passwordHash);
 
         if (result) {
             player.sendMessage(Common.getMessage(locale, "success-registration"));
-            loginSyncHandler.setPlayerLogined(player);
+            syncHandler.setPlayerLogined(player);
         } else {
             player.sendMessage(Common.getMessage(locale, "unknown-registration-error"));
         }

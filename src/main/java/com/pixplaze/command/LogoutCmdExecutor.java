@@ -1,7 +1,7 @@
 package com.pixplaze.command;
 
 import com.pixplaze.plugin.PixplazeLoginSync;
-import com.pixplaze.sync.database.sql.LoginSyncHandler;
+import com.pixplaze.sync.database.sql.SqlSyncHandler;
 import com.pixplaze.util.Common;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class LogoutCmdExecutor implements CommandExecutor {
 
-    private static final LoginSyncHandler loginSyncHandler = LoginSyncHandler.getInstance();
+    private static final SqlSyncHandler syncHandler = SqlSyncHandler.getInstance();
     private static final PixplazeLoginSync plugin = PixplazeLoginSync.getInstance();
 
     @Override
@@ -26,11 +26,11 @@ public class LogoutCmdExecutor implements CommandExecutor {
         Player player = (Player) sender;
         String locale = player.getLocale();
 
-        if (!loginSyncHandler.isPlayerLogined(player)) {
+        if (!syncHandler.isPlayerLogined(player)) {
             player.sendMessage(Common.getMessage(locale, "not-logged-yet"));
             return true;
         }
-        loginSyncHandler.setPlayerUnlogined(player);
+        syncHandler.setPlayerUnlogined(player);
         player.sendMessage(Common.getMessage(locale, "player-logout"));
         return true;
     }

@@ -7,21 +7,18 @@ import java.sql.*;
 public class ConnectionManager {
     private final PixplazeLoginSync plugin = PixplazeLoginSync.getInstance();
 
-    private String url;
-    private String address;
-    private String port;
-    private String name;
-    private String user;
-    private String password;
+    private final String url;
+    private final String user;
+    private final String password;
 
     private Connection connection;
 
     private static ConnectionManager instance;
 
     public ConnectionManager() {
-        address = plugin.getConfig().getString("mysql.address");
-        port = plugin.getConfig().getString("mysql.port");
-        name = plugin.getConfig().getString("mysql.name");
+        String address = plugin.getConfig().getString("mysql.address");
+        String port = plugin.getConfig().getString("mysql.port");
+        String name = plugin.getConfig().getString("mysql.name");
         user = plugin.getConfig().getString("mysql.user");
         password = plugin.getConfig().getString("mysql.password");
         url = "jdbc:mysql://" + address + ":" + port + "/" + name + "?autoReconnect=true&useUnicode=yes";

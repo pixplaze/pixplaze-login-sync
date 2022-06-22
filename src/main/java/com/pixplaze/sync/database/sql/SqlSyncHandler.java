@@ -9,20 +9,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
-public class LoginSyncHandler implements ISyncHandler {
+public class SqlSyncHandler implements ISyncHandler {
     private static final ConnectionManager connectionManager = ConnectionManager.getInstance();
 
-    private static LoginSyncHandler instance;
+    private static SqlSyncHandler instance;
 
     private final ArrayList<Player> unloginedPlayers = new ArrayList<>();
     private final ArrayList<Player> loginedPlayers = new ArrayList<>();
 
-    public static LoginSyncHandler getInstance() {
+    public static SqlSyncHandler getInstance() {
         if (instance == null) {
-            instance = new LoginSyncHandler();
+            instance = new SqlSyncHandler();
         }
         return instance;
     }
